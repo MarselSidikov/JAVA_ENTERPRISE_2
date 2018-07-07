@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: 'Sunflower', sans-serif !important;
+        }
+
+        .row {
+            padding-top: 20px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            line-height: 60px; /* Vertically center the text there */
+            background-color: #f5f5f5;
+        }
+    </style>
+    <script>
+
+        function getAnalyzingPapers() {
+            $.ajax({
+                url: "/me-prediction/analyzing/papers",
+                type: "GET",
+                success: function (response) {
+                    var papersTable = document.getElementById('papersTable');
+                    papersTable.innerHTML = "";
+                    var newHtmlInner = "";
+                    for (var i = 0; i < response.length; i++) {
+                        newHtmlInner += '<tr>';
+                        newHtmlInner += '<td>' + response[i]['title'] + '</td>' +
+                            '<td>' + response[i]['author'] + '</td>';
+                        if (response[i]['state'] === 'analyzed') {
+                            newHtmlInner += '<td><kbd style="background-color: darkslategrey">' + response[i]['state'] + '</kbd></td>';
+                        } else {
+                            newHtmlInner += '<td><kbd style="background-color:darkred;">' + response[i]['state'] + '</kbd></td>';
+                        }
+                        newHtmlInner += '<td>' + response[i]['predictedLikes'] + '</td>' +
+                            '</tr>';
+                        papersTable.innerHTML = newHtmlInner;
+                    }
+                }
+            })
+        }
+
+        function sendCustomPaper(title, username, paperText) {
+            var json = {title: title, author: username, paperText: paperText};
+            $.ajax({
+                url: "/me-prediction/papers",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                complete: function () {
+                    getAnalyzingPapers();
+                }
+            })
+        }
+
+        function sendMediumPaper(link) {
+            $.ajax({
+                url : "/me-prediction/papers/medium?link=" + link,
+                type: "GET",
+                success: function (response) {
+                    getAnalyzingPapers();
+                }
+            })
+        }
+
+        function getTitles(username) {
+            $.ajax({
+                url: "/medium/users/" + username + "/titles",
+                type: "GET",
+                success: function (response) {
+                    var papersPlace = document.getElementById('papers');
+                    var newHtml = "<ul class='list-group'>";
+                    for (var i = 0; i < response.length; i++) {
+                        newHtml += "<li class='list-group-item'>" + "<a target='_blank' href='" +
+                            response[i]['link'] + "'>" + response[i]['title']+  "</a>"
+                            + "<p style='cursor: pointer' onclick='sendMediumPaper(\"" + response[i]["link"] + "\")'><span style='color: darkslategrey; float: right' class=\"fa fa-hand-o-right\"></span></p>" + "</li>";
+                    }
+                    newHtml += "</ul>";
+                    papersPlace.innerHTML = newHtml;
+                }
+            })
+        }
+    </script>
+    <title>MePrediction</title>
+    <link href="https://fonts.googleapis.com/css?family=Sunflower:300" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body onload="getAnalyzingPapers()">
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add custom paper</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Here you can add custom paper for analyze</p>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="background-color: darkslategrey; color: white"
+                              id="customUsernameText">@</span>
+                    </div>
+                    <input type="text"
+                           class="form-control" id="customUsername" placeholder="Username" aria-label="Username"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="background-color: darkslategrey; color: white"
+                              id="customTitleLabel">T&nbsp;</span>
+                    </div>
+                    <input class="form-control" id="customTitle" placeholder="Title" aria-label="Username"
+                           aria-describedby="basic-addon1">
+                </div>
+                <label for="paperText">PaperText:</label>
+                <textarea class="form-control" rows="10" id="paperText"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="sendCustomPaper(
+                    document.getElementById('customTitle').value,
+                    document.getElementById('customUsername').value,
+                    document.getElementById('paperText').value
+                )" class="btn btn-primary" style="background-color: darkslategrey; color: white" data-dismiss="modal">
+                    Send
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav class="navbar navbar-light fixed-top" style="background-color:darkslategrey; color:white;">
+    <a class="navbar-brand">
+        <h1><span class="fa fa-file"></span> MePrediction</h1>
+    </a>
+    <p>Service of predicting the success of the article on the site <a href="http://medium.com">medium.com</a> by
+        deep learning</p>
+</nav>
+<div class="container center">
+    <div class="row">
+        <div class="container" style=" padding-top: 70px;">
+            <h1>The training data set consists of 62,313 articles written before July 1, 2017. </h1>
+            <p>Publications contain the following information:</p>
+            <blockquote class="blockquote">
+                <p>id of publication, date of publishing, title, author and content. </p>
+                <footer class="blockquote-footer">Developed by Sidikov Marsel</footer>
+            </blockquote>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style="background-color:darkslategrey; color:white">Search papers</div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color: darkslategrey; color: white" id="basic-addon1">@</span>
+                        </div>
+                        <input type="text" onchange="getTitles(document.getElementById('username').value)"
+                               class="form-control" id="username" placeholder="Username" aria-label="Username"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background-color: darkslategrey; color: white">Papers of user</div>
+                        <div class="card-dody" id="papers">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header" style="background-color:darkslategrey; color:white">
+                    Predictions
+                    <div class="mr-3" style="float: right;">
+                        <button type="button" class="btn btn-primary"
+                                style=" border-color: darkslategrey;
+                                background-color: lightgreen; color: darkslategrey" onclick="getAnalyzingPapers()">
+                            Update
+                        </button>
+                    </div>
+                    <div class="mr-2" style="float: right">
+                        <button type="button" class="btn btn-primary"
+                                style=" border-color: darkslategrey; background-color: lightgreen; color: darkslategrey"
+                                data-toggle="modal"
+                                data-target="#myModal">
+                            Add custom paper
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>State</th>
+                            <th>Predicted likes</th>
+                        </tr>
+                        </thead>
+                        <tbody id="papersTable">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 140px">
+    <footer class="footer fixed-bottom" style="background-color:darkslategrey;">
+        <div class="container" style="color: white">
+            <span class="text" style="color: white;">&copy; 2018 Sidikov Marsel</span>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
