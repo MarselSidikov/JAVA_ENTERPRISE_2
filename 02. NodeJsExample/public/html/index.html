@@ -6,13 +6,64 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <script>
+        // описываем функцию, которая будет вызвана из бразуера
+        function getUsers() {
+            // создаем оъект запроса
+            var xmlhttp = new XMLHttpRequest();
+            // указываем url, куда будет отправлен запрос
+            var url = "/users";
+
+            // описываем функцию,которая будет срабатывать
+            // при корректной обработке запроса сервером
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    // получаем список людей в формате JSON
+                    var users = JSON.parse(this.responseText);
+                    // получаем объект на странице по его id
+                    var usersTable = document.getElementById('users_table');
+                    // готовим html-код, который нужно будет поместить
+                    // внутри таблицы
+                    var htmlUsersResult = "";
+
+                    htmlUsersResult = "<tr>" +
+                        "            <th>Имя</th>\n" +
+                        "            <th>Фамилия</th>\n" +
+                        "        </tr>";
+                    for (var i = 0; i < users.length - 1; i++) {
+                        htmlUsersResult += '<tr>';
+                        htmlUsersResult += '<td>' + users[i].name + '</td>';
+                        htmlUsersResult += '<td>' + users[i].surname + '</td>';
+                        htmlUsersResult += '</tr>';
+                    }
+                    usersTable.innerHTML = htmlUsersResult;
+                }
+            };
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+    </script>
 </head>
-<body>
-<a href="/html/hello_page.html"><h1>Hello!</h1></a>
-<form action="/info">
-	<input type="text" name="name">
-	<input type="text" name="surname">
-	<input type="submit" name="">
-</form>
+<body onload="getUsers()">
+<h1>Пользователи</h1>
+<div>
+    <table id="users_table">
+    </table>
+</div>
+<h1>Добавить пользователя</h1>
+<div>
+    <!--Форма, отправляющая post-запрос на адрес /users с
+    телом запроса, в котором будут параметры name и surname -->
+    <form method="post" action="/users">
+        <label for="name-input">Имя пользователя</label>
+        <input id='name-input' type="text" name="name">
+        <br>
+        <label for="surname-input">Фамилия пользователя</label>
+        <input id='surname-input' type="text" name="surname">
+        <br>
+        <input type="submit" name="">
+    </form>
+</div>
 </body>
 </html>
