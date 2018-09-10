@@ -1,5 +1,8 @@
 package ru.itis.pizza.models;
 
+import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -9,8 +12,15 @@ import java.util.List;
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@Builder
 public class Order {
     private Long id;
     private User client;
     private List<Pizza> pizzas;
+    private String address;
+    private LocalDateTime dateTime;
 }

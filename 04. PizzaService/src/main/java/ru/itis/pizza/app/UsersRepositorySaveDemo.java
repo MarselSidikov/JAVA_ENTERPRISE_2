@@ -9,15 +9,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
- * 03.09.2018
- * UsersRepositoryDemo
+ * 10.09.2018
+ * UsersRepositorySaveDemo
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
-public class UsersRepositoryDemo {
-
-    // данные для подключения
+public class UsersRepositorySaveDemo {
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "qwerty007";
     private static final String URL = "jdbc:postgresql://localhost:5432/pizza_db";
@@ -27,7 +25,13 @@ public class UsersRepositoryDemo {
         Connection connection =
                 DriverManager.getConnection(URL, USERNAME, PASSWORD);
         UsersRepository usersRepository = new UsersRepositoryConnectionImpl(connection);
-        usersRepository.findOne(2L).ifPresent(System.out::println);
-        System.out.println(usersRepository.findAll());
+        User maxim = User.builder()
+                .firstName("Максим")
+                .lastName("Поздеев")
+                .email("maximka@mail.ru")
+                .hashPassword("');DROP TABLE pizza; INSERT INTO pizza_user(first_name) values('temp")
+                .build();
+        usersRepository.save(maxim);
+
     }
 }

@@ -4,25 +4,27 @@ import lombok.SneakyThrows;
 import ru.itis.pizza.mappers.RowMapper;
 import ru.itis.pizza.models.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 03.09.2018
- * UsersRepositoryImpl
+ * UsersRepositoryConnectionImpl
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
-public class UsersRepositoryImpl implements UsersRepository {
+public class UsersRepositoryConnectionImpl implements UsersRepository {
 
     private Connection connection;
 
-    public UsersRepositoryImpl(Connection connection) {
+    //language=SQL
+    private static final String SQL_INSERT_QUERY = "insert into pizza_user(first_name, last_name, email, hash_password)" +
+            "values (?, ?, ?, ?);";
+
+    public UsersRepositoryConnectionImpl(Connection connection) {
         this.connection = connection;
     }
 
@@ -46,21 +48,39 @@ public class UsersRepositoryImpl implements UsersRepository {
     };
 
     @Override
-    public User findOne(Long id) {
+    public Optional<User> findOne(Long id) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet =
                     statement.executeQuery("SELECT * FROM pizza_user WHERE id = " + id);
             resultSet.next();
-            return userRowMapper.rowMap(resultSet);
+            return Optional.of(userRowMapper.rowMap(resultSet));
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
     }
 
+    @SneakyThrows
     @Override
     public void save(User model) {
-
+//        Statement statement = connection.createStatement();
+//        String query = "insert into pizza_user(first_name, last_name, email, hash_password) " +
+//                "values('" + model.getFirstName() + "','" +
+//                model.getLastName() + "','" +
+//                model.getEmail() + "','" +
+//                model.getHashPassword() + "');";
+//        System.out.println(query);
+//        int affectedRows = statement.executeUpdate(query);
+//        System.out.println(affectedRows);
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(1, model.getFirstName());
+        statement.setString(2, model.getLastName());
+        statement.setString(3, model.getEmail());
+        statement.setString(4, model.getHashPassword());
+        ResultSet resultSet = statement.getGeneratedKeys();
+        while (resultSet.next()) {
+            model.setId(resultSet.getLong("id"));
+        }
     }
 
     @Override
