@@ -1,0 +1,18 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!--Регистрация сервлета-->
+    <servlet>
+        <servlet-name>helloServlet</servlet-name>
+        <servlet-class>ru.itis.pizza.servlets.HelloPageServlet</servlet-class>
+    </servlet>
+
+    <!--Говорим, на какой урл реагирует сервлет-->
+    <servlet-mapping>
+        <servlet-name>helloServlet</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+</web-app>
