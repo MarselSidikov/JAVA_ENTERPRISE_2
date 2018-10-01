@@ -49,6 +49,10 @@ public class UsersRepositoryConnectionImpl implements UsersRepository {
                     "       join order_table on pizza_user.id = order_table.client_id " +
                     "order by pizza_user.id;";
 
+    //language=SQL
+    private static final String SQL_SELECT_USER_BY_EMAIL =
+            "select * from pizza_user where email = ?";
+
     public UsersRepositoryConnectionImpl(Connection connection) {
         this.connection = connection;
     }
@@ -56,6 +60,18 @@ public class UsersRepositoryConnectionImpl implements UsersRepository {
     @Override
     public List<User> findAllByFirstName(String firstName) {
         return null;
+    }
+
+    @Override
+    @SneakyThrows
+    public Optional<User> findOneByEmail(String email) {
+        PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_BY_EMAIL);
+        statement.setString(1, email);
+        ResultSet resultSet = statement.executeQuery();
+        if (!resultSet.next()) {
+            return Optional.empty();
+        }
+        return Optional.of(userWithoutOrdersRowMapper.rowMap(resultSet));
     }
 
     // просто RowMapper, который преобразует строку
@@ -162,6 +178,7 @@ public class UsersRepositoryConnectionImpl implements UsersRepository {
         statement.setString(2, model.getLastName());
         statement.setString(3, model.getEmail());
         statement.setString(4, model.getHashPassword());
+        statement.executeUpdate();
         ResultSet resultSet = statement.getGeneratedKeys();
         while (resultSet.next()) {
             model.setId(resultSet.getLong("id"));

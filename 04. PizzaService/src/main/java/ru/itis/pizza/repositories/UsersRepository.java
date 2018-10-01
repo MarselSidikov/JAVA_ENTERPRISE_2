@@ -3,6 +3,7 @@ package ru.itis.pizza.repositories;
 import ru.itis.pizza.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 03.09.2018
@@ -13,4 +14,6 @@ import java.util.List;
  */
 public interface UsersRepository extends CrudRepository<User> {
     List<User> findAllByFirstName(String firstName);
+
+    Optional<User> findOneByEmail(String email);
 }
