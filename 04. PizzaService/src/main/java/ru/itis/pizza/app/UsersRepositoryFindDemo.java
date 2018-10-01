@@ -7,18 +7,16 @@ import ru.itis.pizza.repositories.UsersRepositoryConnectionImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.List;
+import java.util.Optional;
 
 /**
- * 03.09.2018
- * UsersRepositoryDemo
+ * 01.10.2018
+ * UsersRepositoryFindDemo
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
-public class UsersRepositoryDemo {
-
-    // данные для подключения
+public class UsersRepositoryFindDemo {
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "qwerty007";
     private static final String URL = "jdbc:postgresql://localhost:5432/pizza_db";
@@ -28,8 +26,10 @@ public class UsersRepositoryDemo {
         Connection connection =
                 DriverManager.getConnection(URL, USERNAME, PASSWORD);
         UsersRepository usersRepository = new UsersRepositoryConnectionImpl(connection);
-        usersRepository.findOne(2L).ifPresent(System.out::println);
-        List<User> users = usersRepository.findAll();
-        int i = 0;
+        Optional<User> optionalUser = usersRepository.findOne(10L);
+        System.out.println(optionalUser.get());
+
+        System.out.println(usersRepository.findAll());
+
     }
 }

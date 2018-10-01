@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "client")
 @EqualsAndHashCode
 @Builder
 public class Order {
