@@ -7,6 +7,8 @@ import ru.itis.pizza.repositories.UsersRepositoryConnectionImpl;
 import ru.itis.pizza.services.UsersService;
 import ru.itis.pizza.services.UsersServiceImpl;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,20 +29,12 @@ import java.sql.DriverManager;
 @WebServlet("/signIn")
 public class SignInServlet extends HttpServlet {
 
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "qwerty007";
-    private static final String URL = "jdbc:postgresql://localhost:5432/pizza_db";
-
     private UsersService usersService;
 
     @Override
-    @SneakyThrows
-    public void init() throws ServletException {
-        Class.forName("org.postgresql.Driver");
-        Connection connection =
-                DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        UsersRepository usersRepository = new UsersRepositoryConnectionImpl(connection);
-        usersService = new UsersServiceImpl(usersRepository);
+    public void init(ServletConfig config) throws ServletException {
+        ServletContext context = config.getServletContext();
+        usersService = (UsersService)context.getAttribute("usersService");
     }
 
     @Override

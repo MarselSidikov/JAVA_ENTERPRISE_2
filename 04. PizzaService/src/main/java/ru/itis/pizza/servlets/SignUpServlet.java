@@ -7,6 +7,8 @@ import ru.itis.pizza.repositories.UsersRepositoryConnectionImpl;
 import ru.itis.pizza.services.UsersService;
 import ru.itis.pizza.services.UsersServiceImpl;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Map;
 
 /**
  * 01.10.2018
@@ -27,37 +30,23 @@ import java.sql.DriverManager;
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
 
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "qwerty007";
-    private static final String URL = "jdbc:postgresql://localhost:5432/pizza_db";
-
     private UsersService usersService;
 
     @Override
-    @SneakyThrows
-    public void init() throws ServletException {
-        Class.forName("org.postgresql.Driver");
-        Connection connection =
-                DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        UsersRepository usersRepository = new UsersRepositoryConnectionImpl(connection);
-        usersService = new UsersServiceImpl(usersRepository);
+    public void init(ServletConfig config) throws ServletException {
+        ServletContext context = config.getServletContext();
+        usersService = (UsersService) context.getAttribute("usersService");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("Content-Type", "text/html");
-        PrintWriter writer = response.getWriter();
-        writer.print("<form method='post'>\n" +
-                "\t\t<label for='email'>E-mail</label><br>\n" +
-                "\t\t<input type='text' id='email' name='email' placeholder='E-mail'><br>\n" +
-                "\t\t<label for='password'>Password</label><br>\n" +
-                "\t\t<input type='text' id='password' name='password' placeholder='Password'><br>\n" +
-                "\t\t<label for='firstName'>First Name</label><br>\n" +
-                "\t\t<input type='text' id='firstName' name='firstName' placeholder='First Name'><br>\n" +
-                "\t\t<label for='lastName'>Last Name</label><br>\n" +
-                "\t\t<input type='text' id='lastName' name='lastName' placeholder='Last Name'><br>\n" +
-                "\t\t<input type='submit' value='Sign Up'>\n" +
-                "</form>");
+        String lang = request.getParameter("lang");
+        if (lang == null) {
+            lang = "En";
+        }
+        Map<String, String> locale = (Map<String, String>) request.getServletContext().getAttribute("locale" + lang);
+        request.setAttribute("locale", locale);
+        request.getRequestDispatcher("/jsp/signUp.jsp").forward(request, response);
     }
 
     @Override
