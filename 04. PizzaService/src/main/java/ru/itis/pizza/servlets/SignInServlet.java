@@ -39,15 +39,7 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("Content-Type", "text/html");
-        PrintWriter writer = response.getWriter();
-        writer.print("<form method='post'>\n" +
-                "\t\t<label for='email'>E-mail</label><br>\n" +
-                "\t\t<input type='text' id='email' name='email' placeholder='E-mail'><br>\n" +
-                "\t\t<label for='password'>Password</label><br>\n" +
-                "\t\t<input type='password' id='password' name='password' placeholder='Password'><br> \n" +
-                "\t\t<input type='submit' value='Sign Up'>\n" +
-                "</form>");
+        request.getRequestDispatcher("/jsp/signIn.jsp").forward(request, response);
     }
 
     @Override

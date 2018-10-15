@@ -20,8 +20,10 @@ public class LocaleListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
         Map<String, String> localeEn = Localizations.loadLocalization("en");
         Map<String, String> localeRu = Localizations.loadLocalization("ru");
+        Map<String, String> localePo = Localizations.loadLocalization("po");
         context.setAttribute("localeEn", localeEn);
         context.setAttribute("localeRu", localeRu);
+        context.setAttribute("localePo", localePo);
     }
 
     @Override
