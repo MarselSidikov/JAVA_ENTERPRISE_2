@@ -1,11 +1,15 @@
 package ru.itis.pizza.repositories;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import ru.itis.pizza.models.User;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +24,15 @@ import java.util.Optional;
 public class UsersRepositoryJdbcTemplateImpl implements UsersRepository {
 
     //language=SQL
+    private static final String SQL_INSERT =
+            "insert into pizza_user(first_name, last_name, email, hash_password) values (?, ?, ?, ?);";
+
+    //language=SQL
     private static final String SQL_SELECT_ALL =
             "select * from pizza_user";
 
     //language=SQL
-    private static final String SQL_FIND_BY_ID =
+    private static final String SQL_SELECT_BY_ID =
             "select * from pizza_user where id = ?";
 
     private JdbcTemplate jdbcTemplate;
@@ -43,12 +51,24 @@ public class UsersRepositoryJdbcTemplateImpl implements UsersRepository {
 
     @Override
     public Optional<User> findOne(Long id) {
-        return Optional.of(jdbcTemplate.queryForObject(SQL_FIND_BY_ID, userRowMapper, id));
+        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, userRowMapper, id));
     }
 
     @Override
     public void save(User model) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement ps =
+                            connection.prepareStatement(SQL_INSERT, new String[] {"id"});
+                    ps.setString(1, model.getFirstName());
+                    ps.setString(2, model.getLastName());
+                    ps.setString(3, model.getEmail());
+                    ps.setString(4, model.getHashPassword());
+                    return ps;
+                }, keyHolder);
 
+        model.setId(keyHolder.getKey().longValue());
     }
 
     @Override
