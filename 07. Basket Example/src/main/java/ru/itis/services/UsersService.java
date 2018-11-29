@@ -1,9 +1,12 @@
 package ru.itis.services;
 
+import org.springframework.security.core.userdetails.User;
+import ru.itis.dto.UserDto;
 import ru.itis.forms.SignInForm;
 import ru.itis.forms.SignUpForm;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,6 +18,8 @@ import java.util.Optional;
  */
 public interface UsersService {
     void signUp(SignUpForm form);
+
+    List<UserDto> findAll();
 
     Optional<String> signIn(SignInForm form);
 

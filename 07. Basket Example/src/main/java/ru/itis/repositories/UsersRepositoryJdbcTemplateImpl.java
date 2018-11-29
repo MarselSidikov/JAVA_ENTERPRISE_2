@@ -42,6 +42,7 @@ public class UsersRepositoryJdbcTemplateImpl implements UsersRepository {
             .id(resultSet.getLong("id"))
             .name(resultSet.getString("name"))
             .passwordHash(resultSet.getString("password_hash"))
+            .age(resultSet.getInt("age"))
             .build();
 
     public UsersRepositoryJdbcTemplateImpl(DataSource dataSource) {

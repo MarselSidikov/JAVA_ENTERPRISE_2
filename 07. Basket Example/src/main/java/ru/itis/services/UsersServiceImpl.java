@@ -2,6 +2,7 @@ package ru.itis.services;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.itis.dto.UserDto;
 import ru.itis.forms.SignInForm;
 import ru.itis.forms.SignUpForm;
 import ru.itis.models.Auth;
@@ -9,6 +10,7 @@ import ru.itis.repositories.AuthRepository;
 import ru.itis.repositories.UsersRepository;
 import ru.itis.models.User;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,6 +43,11 @@ public class UsersServiceImpl implements UsersService {
                 .build();
 
         usersRepository.save(user);
+    }
+
+    @Override
+    public List<UserDto> findAll() {
+        return UserDto.from(usersRepository.findAll());
     }
 
     @Override
