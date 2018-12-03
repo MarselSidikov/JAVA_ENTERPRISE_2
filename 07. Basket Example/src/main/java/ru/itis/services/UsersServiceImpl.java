@@ -28,10 +28,11 @@ public class UsersServiceImpl implements UsersService {
     private UsersRepository usersRepository;
     private AuthRepository authRepository;
 
-    public UsersServiceImpl(UsersRepository usersRepository, AuthRepository authRepository) {
+    public UsersServiceImpl(UsersRepository usersRepository, AuthRepository authRepository,
+                            PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.authRepository = authRepository;
-        this.encoder = new BCryptPasswordEncoder();
+        this.encoder = passwordEncoder;
     }
 
     @Override

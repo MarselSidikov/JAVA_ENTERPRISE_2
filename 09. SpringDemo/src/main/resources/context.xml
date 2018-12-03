@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="terminal" class="ru.itis.spring.components.TerminalWithCashBack">
+        <constructor-arg name="amount" value="300"/>
+        <constructor-arg name="printer" ref="printer"/>
+    </bean>
+
+    <bean id="printer" class="ru.itis.spring.components.PrinterRedImpl" scope="prototype">
+        <constructor-arg name="name" value="Очень грубый терминал"/>
+        <property name="prefix" value="ИЗВИНИТЕ ЗА ГРУБОСТЬ( ХОТЯ ТАК ВАМ И НАДО"/>
+    </bean>
+</beans>

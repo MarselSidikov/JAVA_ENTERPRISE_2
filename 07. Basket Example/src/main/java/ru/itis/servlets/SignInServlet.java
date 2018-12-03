@@ -1,13 +1,7 @@
 package ru.itis.servlets;
 
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import ru.itis.forms.SignInForm;
-import ru.itis.repositories.AuthRepository;
-import ru.itis.repositories.AuthRepositoryImpl;
-import ru.itis.repositories.UsersRepository;
-import ru.itis.repositories.UsersRepositoryJdbcTemplateImpl;
 import ru.itis.services.UsersService;
-import ru.itis.services.UsersServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -17,10 +11,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * 25.10.2018

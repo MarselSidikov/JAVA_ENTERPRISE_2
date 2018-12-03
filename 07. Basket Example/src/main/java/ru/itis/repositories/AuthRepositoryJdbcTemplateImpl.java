@@ -13,12 +13,12 @@ import java.util.Optional;
 
 /**
  * 25.10.2018
- * AuthRepositoryImpl
+ * AuthRepositoryJdbcTemplateImpl
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
-public class AuthRepositoryImpl implements AuthRepository {
+public class AuthRepositoryJdbcTemplateImpl implements AuthRepository {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -30,7 +30,7 @@ public class AuthRepositoryImpl implements AuthRepository {
     private static final String SQL_SELECT_BY_COOKIE_VALUE =
             "select * from auth where cookie_value = ?";
 
-    public AuthRepositoryImpl(DataSource dataSource) {
+    public AuthRepositoryJdbcTemplateImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
