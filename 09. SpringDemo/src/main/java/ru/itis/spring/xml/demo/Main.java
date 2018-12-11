@@ -1,4 +1,4 @@
-package ru.itis.spring.demo;
+package ru.itis.spring.xml.demo;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

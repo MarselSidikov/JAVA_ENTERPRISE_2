@@ -1,8 +1,7 @@
-package ru.itis.spring.dependencies;
+package ru.itis.spring.xml.dependencies;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.itis.spring.components.Printer;
 import ru.itis.spring.components.Terminal;
 
 /**
