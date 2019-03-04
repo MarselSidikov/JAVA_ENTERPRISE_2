@@ -1,6 +1,7 @@
 package ru.itis.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import ru.itis.StringsRepository;
 import ru.itis.StringsRepositoryEnglishFakeImpl;
@@ -14,15 +15,7 @@ import ru.itis.StringsRepositoryRussianFakeImpl;
  * @version v1.0
  */
 @Configuration
-public class JavaConfig {
+@ComponentScan("ru.itis")
+public class AppAnnotationConfig {
 
-    @Bean
-    public StringsRepository stringsRussianRepository() {
-        return new StringsRepositoryRussianFakeImpl();
-    }
-
-    @Bean
-    public StringsRepository stringsEnglishRepository() {
-        return new StringsRepositoryEnglishFakeImpl();
-    }
 }
