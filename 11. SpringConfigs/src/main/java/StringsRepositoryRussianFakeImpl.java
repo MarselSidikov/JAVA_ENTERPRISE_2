@@ -4,15 +4,14 @@ import java.util.List;
 
 /**
  * 04.03.2019
- * StringsRepositoryFakeImpl
+ * StringsRepositoryRussianFakeImpl
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
  */
-public class StringsRepositoryFakeImpl implements StringsRepository {
-
+public class StringsRepositoryRussianFakeImpl implements StringsRepository {
     @Override
     public List<String> findAll() {
-        return Lists.newArrayList("Hello", "Bye", "Marsel");
+        return Lists.newArrayList("Привет", "Пока", "Марсель");
     }
 }
