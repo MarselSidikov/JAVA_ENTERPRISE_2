@@ -1,3 +1,5 @@
+package ru.itis;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -6,7 +8,7 @@ import java.util.Random;
 
 /**
  * 04.03.2019
- * StringsServiceImpl
+ * ru.itis.StringsServiceImpl
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
@@ -14,7 +16,7 @@ import java.util.Random;
 public class StringsServiceImpl implements StringsService {
 
     @Autowired
-    @Qualifier(value = "stringsEnglishRepository")
+    @Qualifier("stringsEnglishRepository")
     private StringsRepository stringsRepository;
 
     private Random random;

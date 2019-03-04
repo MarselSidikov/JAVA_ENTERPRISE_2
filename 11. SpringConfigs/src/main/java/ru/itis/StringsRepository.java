@@ -1,8 +1,10 @@
+package ru.itis;
+
 import java.util.List;
 
 /**
  * 04.03.2019
- * StringsRepository
+ * ru.itis.StringsRepository
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0

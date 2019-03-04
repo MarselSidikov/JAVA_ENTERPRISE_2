@@ -1,6 +1,8 @@
+package ru.itis;
+
 /**
  * 04.03.2019
- * StringsService
+ * ru.itis.StringsService
  *
  * @author Sidikov Marsel (First Software Engineering Platform)
  * @version v1.0
