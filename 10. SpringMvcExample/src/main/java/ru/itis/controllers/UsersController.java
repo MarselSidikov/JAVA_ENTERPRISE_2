@@ -1,10 +1,9 @@
 package ru.itis.controllers;
 
-import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
-import ru.itis.dao.HumansDao;
-import ru.itis.models.Human;
+import ru.itis.models.User;
 import ru.itis.services.UsersService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,20 +19,17 @@ import java.util.List;
  */
 public class UsersController implements Controller {
 
+    @Autowired
     private UsersService usersService;
-
-    public UsersController(UsersService usersService) {
-        this.usersService = usersService;
-    }
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         if (httpServletRequest.getMethod().equals("GET")) {
-            List<Human> humans = usersService.getAllUsers();
+            List<User> users = usersService.getAllUsers();
             ModelAndView modelAndView = new ModelAndView();
 
-            modelAndView.addObject("owners", humans);
-            modelAndView.setViewName("all_users_page");
+            modelAndView.addObject("users", users);
+            modelAndView.setViewName("users_page");
             return modelAndView;
         }
         return null;

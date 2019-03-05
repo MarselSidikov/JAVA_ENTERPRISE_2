@@ -7,13 +7,13 @@
 <body>
 <table>
     <tr>
-        <th>Имя</th>
-        <th>Возраст</th>
+        <th>ID</th>
+        <th>Name</th>
     </tr>
-    <c:forEach items="${owners}" var="owner">
+    <c:forEach items="${users}" var="user">
         <tr>
-            <td>${owner.name}</td>
-            <td>${owner.age}</td>
+            <td>${user.id}</td>
+            <td>${user.name}</td>
         </tr>
     </c:forEach>
 </table>

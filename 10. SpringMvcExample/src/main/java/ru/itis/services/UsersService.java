@@ -1,6 +1,6 @@
 package ru.itis.services;
 
-import ru.itis.models.Human;
+import ru.itis.models.User;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @version v1.0
  */
 public interface UsersService {
-    List<Human> getAllUsers();
+    List<User> getAllUsers();
 
-    void addUser(Human human);
+    void addUser(User user);
 }
