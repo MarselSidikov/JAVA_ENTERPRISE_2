@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="ru.itis.models.User" table="center_user">
+        <id name="id" type="java.lang.Long" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="firstName" column="first_name"/>
+        <property name="lastName" column="last_name"/>
+
+        <set name="courses" table="user_course" cascade="save-update">
+            <key column="user_id"/>
+            <many-to-many column="course_id" class="ru.itis.models.Course"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>
