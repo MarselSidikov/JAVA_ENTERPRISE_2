@@ -1,0 +1,69 @@
+POST http://localhost/login
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "login" : "marsel",
+  "password": "qwerty007"
+}
+
+###
+
+POST http://localhost/products
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+AUTH: 945cbc6c-e5d7-47c2-9438-665aaa9204f8
+
+{
+  "name": "Молоко",
+  "price": 78.5
+}
+
+###
+
+POST http://localhost/products
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "Сыр",
+  "price": 120
+}
+
+###
+
+PUT http://localhost/products/1
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "Молоко",
+  "price": 65.0
+}
+
+###
+
+GET http://localhost/products/
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###
+
+GET http://localhost/products/2
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###
+
+DELETE http://localhost/products/2
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###
