@@ -1,0 +1,12 @@
+zuul:
+  prefix: /api
+  routes:
+    user:
+      path: /cat/**
+      serviceId: CAT
+    country:
+      path: /country/**
+      serviceId: COUNTRY
+    about:
+      path: /about/**
+      servcieId: ABOUT
