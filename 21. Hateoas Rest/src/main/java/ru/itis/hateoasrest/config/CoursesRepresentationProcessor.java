@@ -19,15 +19,12 @@ public class CoursesRepresentationProcessor implements RepresentationModelProces
 
     @Override
     public EntityModel<Course> process(EntityModel<Course> model) {
-        // получаем модель
         Course course = model.getContent();
-        // если модель - черновик
-        if (course.getState().equals("Draft")) {
-            // разрешаю ей публиковаться
+        if (course != null && course.getState().equals("Draft")) {
             model.add(linkTo(methodOn(CoursesController.class).publish(course.getId())).withRel("publish"));
         }
 
-        if (course.getState().equals("Published")) {
+        if (course!= null && course.getState().equals("Published")) {
             model.add(links.linkToItemResource(Course.class, course.getId()).withRel("delete"));
         }
         return model;

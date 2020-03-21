@@ -1,0 +1,25 @@
+= Описание API по курсам
+
+== Методы
+
+|===
+|Метод | Назначение
+|`PUT`
+|Обновить сущность или ее состояние
+|===
+
+=== Публикация курса
+
+Можно опубликовать курсы со статусом *PUBLISHED*
+
+.request
+
+include::{snippets}/publish_course/http-request.adoc[]
+
+.response
+
+include::{snippets}/publish_course/http-response.adoc[]
+
+.response-fields
+
+include::{snippets}/publish_course/response-fields.adoc[]
