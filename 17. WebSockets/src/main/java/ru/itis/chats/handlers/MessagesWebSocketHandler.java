@@ -17,11 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class MessagesWebSocketHandler extends TextWebSocketHandler {
 
-
     private static Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {

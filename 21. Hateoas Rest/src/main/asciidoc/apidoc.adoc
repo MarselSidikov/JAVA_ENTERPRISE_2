@@ -16,7 +16,7 @@
 
 include::{snippets}/publish_course/http-request.adoc[]
 
-.response
+.response   
 
 include::{snippets}/publish_course/http-response.adoc[]
 
