@@ -13,15 +13,11 @@ function setConnected(connected) {
 }
 
 function connect() {
-    // создаем объект SockJs
     var socket = new SockJS('/messages');
-    // создаем stomp-клиент поверх sockjs
     stompClient = Stomp.over(socket);
-    // при подключении
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        // подписываемся на url
         stompClient.subscribe('/topic/chat', function (greeting) {
             showGreeting(greeting);
         });
@@ -36,9 +32,7 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-// отправка
 function sendName() {
-    // отправляем на определенный url
     stompClient.send("/app/hello", {}, $("#name").val());
 }
 

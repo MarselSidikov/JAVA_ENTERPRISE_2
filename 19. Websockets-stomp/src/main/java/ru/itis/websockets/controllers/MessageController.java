@@ -21,18 +21,13 @@ public class MessageController {
     @Autowired
     SimpMessagingTemplate template;
 
-    // если сообщение пришло на /app/hello
     @MessageMapping("/hello")
     public void getMessage(Message<?> message) {
-        // печатаем сообщение
         System.out.println(message);
-        // отправляем hello всем, кто подписан на /topic/chat
         template.convertAndSend("/topic/chat/", "hello!");
     }
 
-    // если сообщение пришло на /app/bye
     @MessageMapping("/bye")
-    // оно отправляется сразу всем, кто подписан на /topic/chat
     @SendTo("/topic/chat")
     public TextMessage byeMessage(Message<?> message) {
         return new TextMessage("Bye bye!");

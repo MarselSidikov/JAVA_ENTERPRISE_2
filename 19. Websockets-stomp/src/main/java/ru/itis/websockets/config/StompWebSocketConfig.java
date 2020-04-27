@@ -18,14 +18,11 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // включил in memory MessageBroker
         config.enableSimpleBroker("/topic");
-        // указал, куда могут быть направлены сообщения
         config.setApplicationDestinationPrefixes("/app");
     }
 
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-        // обозначили точку подключения
         stompEndpointRegistry.addEndpoint("/messages").setAllowedOrigins("*").withSockJS();
     }
 
